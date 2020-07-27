@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {fetchUser, autoLogin, signUserUp, logUserOut} from './Store/action/userActions'
+import {ThemeProvider} from 'styled-components'
+
+import {logUserIn, autoLogin, signUserUp, logUserOut} from './Store/action/userActions'
+import { ChangeTheme } from './Components/ChangeTheme';
 
 export default function App() {
 
   const loggedIn = useSelector(state => state.userReducer.loggedIn)
   const user = useSelector(state => state.userReducer.user)
+  const authError = useSelector(state => state.userReducer.authError)
+  const error = useSelector(state => state.errorReducer.error)
+  const theme = useSelector(state => state.themeReducer.themeStyle)
   const dispatch = useDispatch()
 
   const login = (e) => {
@@ -13,7 +19,7 @@ export default function App() {
 
     const [username, password] = e.target.elements
 
-    dispatch(fetchUser({
+    dispatch(logUserIn({
       identifier: username.value,
       password: password.value
     }))
@@ -36,7 +42,7 @@ export default function App() {
   }, [dispatch])
 
   return (
-      <>
+      <ThemeProvider theme={theme}>
         <h1>Book</h1>
         <form onSubmit={login}>
           <h2>Login</h2>
@@ -56,6 +62,13 @@ export default function App() {
           <input type='password' name='password' placeholder='password' />
           <input type='submit' value='Register' />
         </form>
-      </>
+
+        <hr />
+        <h3>Errors</h3>
+        {authError && <p>{error}</p>}
+
+        <hr />
+        <ChangeTheme />
+      </ThemeProvider>
   );
 }
