@@ -10,7 +10,7 @@ const authError = () => ({type: "AUTH_ERROR"})
 export const logUserOut = () => ({type: "LOG_OUT"})
 
 export const logUserIn = (userInfo) => dispatch => {
-    axios.post(`http://localhost:1337/auth/local`, userInfo)
+    axios.post(`http://192.168.0.106:1337/auth/local`, userInfo)
     .then(response => {
         const data = response.data
         localStorage.setItem("token", data.jwt)
@@ -23,7 +23,7 @@ export const logUserIn = (userInfo) => dispatch => {
 }
 
 export const signUserUp = (userInfo) => dispatch => {
-    axios.post(`http://localhost:1337/auth/local/register`, userInfo)
+    axios.post(`http://192.168.0.106:1337/auth/local/register`, userInfo)
     .then(response => {
         const data = response.data
         localStorage.setItem("token", data.jwt)
@@ -37,7 +37,7 @@ export const signUserUp = (userInfo) => dispatch => {
 
 export const autoLogin = () => dispatch => {
     localStorage.getItem('token') &&
-    axios.get(`http://localhost:1337/users/me`, {
+    axios.get(`http://192.168.0.106:1337/users/me`, {
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
